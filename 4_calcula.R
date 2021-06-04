@@ -1,4 +1,5 @@
 ### PENDENCIA NO LOOP
+
 ## Momento 1
 # 1) lancar os dados
 
