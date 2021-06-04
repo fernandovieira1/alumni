@@ -9,7 +9,7 @@
 
 # 2) executar o loop
 # 3) salvar o resultados
-# 4) repetir até o último resultado
+# 4) repetir até o último resultado 
 
 # 5) salvar os resultados
 
