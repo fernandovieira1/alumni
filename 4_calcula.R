@@ -1,6 +1,8 @@
+# SOBRE o GITHUB: 
+# - Sempre verificar se se trata da última versão
+# - Se for usar o RStudio cloud, sempre que entrar no projeto fazer um 'pull'
+
 ### PENDENCIA NO LOOP
-# Agora no RStudio cloud
-# Agora no RStudio Mac
 
 ## Momento 1
 # 1) lancar os dados
