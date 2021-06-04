@@ -171,7 +171,7 @@ tab1 <- format(as.data.frame(momentos), decimal.mark = ',', big.mark = '.') %>%
 
 tab1
 
-## Parei aqui: estudar a questao de quando o pedido foi feito há menos tempo do que a contagem dos momentos 2 e 3
+## Parei aqui: estudar a questao de quando o pedido foi feito há menos tempo do que a contagem dos momentos 2 e 3 
 
 #### Fim: MOMENTO 1 @ ####
 
