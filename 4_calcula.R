@@ -1,4 +1,5 @@
 ### PENDENCIA NO LOOP
+# Agora no RStudio cloud
 
 ## Momento 1
 # 1) lancar os dados
