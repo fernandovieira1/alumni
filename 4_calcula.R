@@ -26,7 +26,6 @@ library(googlesheets4)
 gs4_deauth()
 #gs4_auth()
 
-
 bd <- 'IndPrecVer1d'
 raiz <- '/Users/fernandovieira/OneDrive/6. Alumni/gesALUMNI/Info/Versao 2/Em_Producao/4_momento1.R'
 #raiz <- 'C:/Users/ferna/OneDrive/6. Alumni/gesALUMNI/Info/Versao 2/Em_Producao/4_calcAlumni_JM_SOURCE_17052021.R'
@@ -114,14 +113,42 @@ for (i in 1:nrow(dfChave)) {
   cmDataFim <- min(taxasDataMax,
                    dmy(paste(31, 12, year(reqDataPrec)+1, sep = '-'))) 
   source(raiz)
+  assign(paste('nominal', nr, sep = ''), nominal); Lnominal <- append(Lnominal, get(as.character(as.name(paste('nominal', nr, sep = '')))))
+  assign(paste('tReal', nr, sep = ''), tReal); LtReal <-  append(LtReal, get(as.character(as.name(paste('tReal', nr, sep = '')))))
+  assign(paste('tJM', nr, sep = ''), tJM); LtJM <-  append(LtJM, get(as.character(as.name(paste('tJM', nr, sep = '')))))
+  assign(paste('t', nr, sep = ''), t); Lt <-  append(Lt, get(as.character(as.name(paste('t', nr, sep = '')))))
+  
+  assign(paste('anexo1_', nr, sep = ''), anexo1(nr))
 }
 
-assign(paste('nominal', nr, sep = ''), nominal); Lnominal <- append(Lnominal, get(as.character(as.name(paste('nominal', nr, sep = '')))))
-assign(paste('tReal', nr, sep = ''), tReal); LtReal <-  append(LtReal, get(as.character(as.name(paste('tReal', nr, sep = '')))))
-assign(paste('tJM', nr, sep = ''), tJM); LtJM <-  append(LtJM, get(as.character(as.name(paste('tJM', nr, sep = '')))))
-assign(paste('t', nr, sep = ''), t); Lt <-  append(Lt, get(as.character(as.name(paste('t', nr, sep = '')))))
+####  1. DADOS CÁLCULO (um) ####
+# 2
+nr <- nr+1
 
-assign(paste('anexo1_', nr, sep = ''), anexo1(nr))
+assign(paste('dfChave', nr, sep = ''), tibble(nomDataIn = dmy('15-03-2003'),
+                                              nomDataFim = dmy('15-06-2003'),
+                                              nominal = 99)) -> dfChave
+
+for (i in 1:nrow(dfChave)) {
+  nomDataIn <- NA
+  nomDataIn[i] <- dfChave$nomDataIn[i]
+  nomDataIn <- as.Date(nomDataIn, origin = '1970-01-01')
+  nomDataFim <- NA
+  nomDataFim[i] <- dfChave$nomDataFim[i]
+  nomDataFim <- as.Date(nomDataFim, origin = '1970-01-01')
+  nominal <- NA
+  nominal[i] <- dfChave$nominal[i]
+  cmDataIn <- nomDataIn
+  cmDataFim <- min(taxasDataMax,
+                   dmy(paste(31, 12, year(reqDataPrec)+1, sep = '-'))) 
+  source(raiz)
+  assign(paste('nominal', nr, sep = ''), nominal); Lnominal <- append(Lnominal, get(as.character(as.name(paste('nominal', nr, sep = '')))))
+  assign(paste('tReal', nr, sep = ''), tReal); LtReal <-  append(LtReal, get(as.character(as.name(paste('tReal', nr, sep = '')))))
+  assign(paste('tJM', nr, sep = ''), tJM); LtJM <-  append(LtJM, get(as.character(as.name(paste('tJM', nr, sep = '')))))
+  assign(paste('t', nr, sep = ''), t); Lt <-  append(Lt, get(as.character(as.name(paste('t', nr, sep = '')))))
+  
+  assign(paste('anexo1_', nr, sep = ''), anexo1(nr))
+}
 
 #### 2. SOMAR RESULTADOS ####
 
@@ -131,22 +158,15 @@ dfMomento1 <- tibble(nominal = sum(Lnominal),
                      t = sum(Lt))
 
 momentos <- tibble(n = seq(1:length(Lt)),
-                   `Pagto. inicial` = c(dfChave1$nomDataIn, dfChave2$nomDataIn),
-                   `Pagto. final` = c(dfChave1$nomDataFim, dfChave2$nomDataFim),
-                   `Nr. pagtos` = c(1, 1), # resolver isso depois
-                   `Valor unitário (R$)` = c(nominal1, nominal2),
-                   `Corrigido (R$)` = c(tReal1, tReal2),
-                   `JM (R$)` = c(tJM1, tJM2),
-                   `Total (R$)` = c(t1, t2))
+                   `Pagto. inicial` = c(dfChave1$nomDataIn, dfChave2$nomDataIn, dfChave3$nomDataIn),
+                   `Pagto. final` = c(dfChave1$nomDataFim, dfChave2$nomDataFim, dfChave3$nomDataFim),
+                   `Nr. pagtos` = c(1, 1, 1), # resolver isso depois
+                   `Valor unitário (R$)` = c(nominal1, nominal2, nominal3),
+                   `Corrigido (R$)` = c(tReal1, tReal2, tReal3),
+                   `JM (R$)` = c(tJM1, tJM2, tJM3),
+                   `Total (R$)` = c(t1, t2, t3))
 
-# momentos <- tibble(n = seq(1:length(Lt)),
-#                    `Pagto. inicial` = c(dfChave1$nomDataIn),#, dfChave2$nomDataIn),
-#                    `Pagto. final` = c(dfChave1$nomDataFim),#, dfChave2$nomDataFim),
-#                    `Nr. pagtos` = c(1), # resolver isso depois
-#                    `Valor unitário (R$)` = c(nominal1),#, nominal2),
-#                    `Corrigido (R$)` = c(tReal1),#, tReal2),
-#                    `JM (R$)` = c(tJM1),#, tJM2),
-#                    `Total (R$)` = c(t1))#, t2))
+
 
 momentos$`Pagto. inicial` <- paste(month(momentos$`Pagto. inicial`), '/', year(momentos$`Pagto. inicial`), sep = '')
 momentos$`Pagto. final` <- paste(month(momentos$`Pagto. final`), '/', year(momentos$`Pagto. final`), sep = '')
